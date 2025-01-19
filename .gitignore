@@ -1,0 +1,14 @@
+# Compiled Class Files
+*.class
+
+# Package Files
+*.jar
+
+# Maven Specific
+target/
+
+# VS Code Specific
+.vscode/
+
+# Package Dependencies
+!lib/*.jar
