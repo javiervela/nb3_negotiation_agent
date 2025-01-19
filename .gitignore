@@ -12,3 +12,6 @@ target/
 
 # Package Dependencies
 !lib/*.jar
+
+# Logs
+*.log

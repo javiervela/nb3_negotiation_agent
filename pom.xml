@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>commodity-market</artifactId>
+	<artifactId>commodityMarket</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
 	<build>
@@ -20,31 +20,6 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- Assembly plugin to create a JAR with dependencies -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.3.0</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>com.example.commoditymarket.RunMarketAndFiveAgents</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -53,22 +28,16 @@
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/commons-net-3.3.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.example</groupId>
 			<artifactId>NB3</artifactId>
 			<version>1.5</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/NB3-1.5.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.example</groupId>
 			<artifactId>NegotiationServer</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/NegotiationServer-1.0.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>

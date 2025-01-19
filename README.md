@@ -37,7 +37,7 @@ To build the project, follow these steps:
 To run the Commodity Market and the five agents, execute the following command:
 
 ```sh
-java -cp target/commodity-market-1.0-SNAPSHOT.jar commodityMarket.agent.RunMarketAndFiveAgents
+java -cp "target/commodityMarket-1.0-SNAPSHOT.jar::lib/*" commodityMarket.agent.RunMarketAndFiveAgents
 ```
 
 ## Libraries
