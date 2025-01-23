@@ -110,11 +110,34 @@ public class CommodityMarket extends Thread {
 			if (secondsToGo > 0 && secondsToGo < lastPrintedTime) {
 				lastPrintedTime = secondsToGo;
 				System.out.println(secondsToGo + " seconds to go till deadline.");
+
+				long timePassed = 30 - secondsToGo;
+				// Write current time in the server log file.
+				String time = "\nCurrent time: " + timePassed + "\n";
+				try {
+					File logFile = new File(logFolderPath + "/server.log");
+					java.nio.file.Files.write(logFile.toPath(), time.getBytes(),
+							java.nio.file.StandardOpenOption.APPEND);
+				} catch (java.io.IOException e) {
+					e.printStackTrace();
+				}
 			}
 
 		}
 
 		notary.printResults(intitialUtilities);
+
+		// Save the results to a file.
+		String results = notary.getResults(intitialUtilities);
+		try {
+			File logFile = new File(logFolderPath + "/results.log");
+			if (!logFile.getParentFile().exists()) {
+				logFile.getParentFile().mkdirs();
+			}
+			java.nio.file.Files.write(logFile.toPath(), results.getBytes());
+		} catch (java.io.IOException e) {
+			e.printStackTrace();
+		}
 
 		negoServer.stopServer();
 

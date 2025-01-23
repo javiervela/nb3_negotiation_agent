@@ -267,4 +267,22 @@ public class CommodityMarketNotary extends Notary {
 		this.logger.logln(table2string(stringTable, 10), true);
 	}
 
+	String getResults(int[] intitialUtilities) {
+
+		StringBuilder result = new StringBuilder();
+
+		result.append("Agent,Before,After").append(System.lineSeparator());
+
+		for (int row = 1; row <= commodityAssets.NUM_AGENTS; row++) {
+
+			int finalVal = utilityProfile.calculateValue(row - 1, commodityAssets);
+
+			result.append(registeredNames.get(row - 1)).append(",")
+				  .append(intitialUtilities[row - 1]).append(",")
+				  .append(finalVal).append(System.lineSeparator());
+		}
+
+		return result.toString();
+	}
+
 }
