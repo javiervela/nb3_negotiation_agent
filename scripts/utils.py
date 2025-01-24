@@ -27,8 +27,8 @@ def get_metrics_from_log_file(log_dir):
     LOG_FILE = f"{log_dir}/server.log"
     RESULTS_FILE = f"{log_dir}/results.log"
 
-    proposals_made = {}
-    proposals_accepted = {}
+    proposals_made = 0
+    proposals_accepted = 0
     proposals_confirmed = 0
     unique_confirmed_proposals = set()
     deals_confirmed = []
@@ -55,26 +55,23 @@ def get_metrics_from_log_file(log_dir):
         # Extract proposals made by each agent
         if "particle: PROPOSE" in message:
             agent = re.search(r"from: (\w+)", message).group(1)
-            if agent in proposals_made:
-                proposals_made[agent] += 1
-            else:
-                proposals_made[agent] = 1
+            proposals_made += 1
+
             if first_proposal_times["made"] is None:
                 first_proposal_times["made"] = current_time
 
         # Extract proposals accepted by each agent
         elif "particle: ACCEPT" in message:
             agent = re.search(r"from: (\w+)", message).group(1)
-            if agent in proposals_accepted:
-                proposals_accepted[agent] += 1
-            else:
-                proposals_accepted[agent] = 1
+            proposals_accepted += 1
+
             if first_proposal_times["accepted"] is None:
                 first_proposal_times["accepted"] = current_time
 
         # Extract confirmed proposals and their deals
         elif "particle: CONFIRM" in message:
             proposals_confirmed += 1
+
             if first_proposal_times["confirmed"] is None:
                 first_proposal_times["confirmed"] = current_time
 
