@@ -58,10 +58,16 @@ public class ImprovedNegotiator extends Thread {
 	}
 
 	// CONSTRUCTOR
-	public ImprovedNegotiator(String name, InetAddress serverAddress, int serverPort) {
+	public ImprovedNegotiator(String name, InetAddress serverAddress, int serverPort, int alpha1, int alpha2) {
 		this.myName = name;
 		this.negoClient = new NegotiationClient(serverAddress, serverPort);
 		this.nb3Algorithm = new CmNB3Algorithm(this);
+		this.nb3Algorithm.setConcessionDegrees(alpha1, alpha2);
+	}
+
+	// CONSTRUCTOR with default values for concession degrees
+	public ImprovedNegotiator(String name, InetAddress serverAddress, int serverPort) {
+		this(name, serverAddress, serverPort, 2, 4);
 	}
 
 	@Override

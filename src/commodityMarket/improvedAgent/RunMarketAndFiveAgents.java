@@ -10,6 +10,31 @@ import ddejonge.negoServer.Logger;
 
 public class RunMarketAndFiveAgents {
 
+	public enum ConcessionPreset {
+		GREEDY(-4, -4),
+		LAZY(4, -4),
+		PICKY(-4, 4),
+		DESPERATE(4, 4),
+		DEFAULT(2, 4),
+		NEUTRAL(1, 1);
+
+		private final int alpha1;
+		private final int alpha2;
+
+		ConcessionPreset(int alpha1, int alpha2) {
+			this.alpha1 = alpha1;
+			this.alpha2 = alpha2;
+		}
+
+		public int getAlpha1() {
+			return alpha1;
+		}
+
+		public int getAlpha2() {
+			return alpha2;
+		}
+	}
+
 	/**
 	 * Starts 5 negotiators, each in a new thread.
 	 * 
@@ -42,11 +67,14 @@ public class RunMarketAndFiveAgents {
 
 			InetAddress serverAddress = InetAddress.getLocalHost();
 
+			ConcessionPreset preset = ConcessionPreset.DEFAULT;
+
 			for (int i = 0; i < 5; i++) {
 
 				System.out.println("RunFiveAgents.main() starting agent " + names[i]);
 
-				ImprovedNegotiator agent = new ImprovedNegotiator(names[i], serverAddress, 1234);
+				ImprovedNegotiator agent = new ImprovedNegotiator(names[i], serverAddress, 1234, preset.getAlpha1(),
+						preset.getAlpha2());
 				agent.enableLoggers(logfolderPath);
 				agent.start();
 			}
