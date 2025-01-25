@@ -1,0 +1,353 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+% Packages for formatting
+% \usepackage{indentfirst}
+
+% Package for line spacing
+\usepackage{setspace}
+
+% Packages for math and proofs
+\usepackage{amsmath, amssymb, amsthm}
+
+% Packages for code formatting
+\usepackage{listings}
+
+% Packages for graphics and images
+\usepackage{graphicx, eso-pic}
+\usepackage{float}
+
+% Packages for hyperlinks and document references
+\usepackage{hyperref}
+
+% Packages for colors
+\usepackage{xcolor}
+
+% Package for modifying titles
+% \usepackage{titling}
+
+% Packages for tables
+\usepackage{booktabs}
+
+% % Package for headers and footers
+% \usepackage{fancyhdr}
+
+% Package for setting page margins
+% \usepackage[a4paper, margin=1in]{geometry}
+
+% Package for customizing lists
+\usepackage{enumitem}
+
+% Package for URLs
+\usepackage{url}
+
+% Package for page size
+\usepackage[a4paper]{geometry}
+
+% inhibit page breaks in the middle of paragraphs
+\widowpenalties 1 10000
+\raggedbottom
+
+% Define colors for code formatting
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\definecolor{codeborder}{rgb}{0.8,0.8,0.8}
+
+% Listings settings for code formatting
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{codeborder},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    xleftmargin=15pt,
+    framexleftmargin=15pt,
+    captionpos=b, % Position the caption below the listing
+    keywordstyle=\color{blue}, % Color the keywords
+    commentstyle=\color{green!60!black}, % Color the comments
+    stringstyle=\color{red}, % Color the strings
+}
+
+
+% Add pictures after the title, in the foreground
+\AddToShipoutPictureFG*{
+    \AtPageUpperLeft{
+        \hspace*{\dimexpr\oddsidemargin + \hoffset + 1.5in\relax}
+        \raisebox{\dimexpr-\height-7\baselineskip}{
+            \makebox[0pt]{\includegraphics[width=3.5cm]{images/uimp.png}}}}
+    \AtPageUpperLeft{
+        \hspace*{\dimexpr\oddsidemargin + \textwidth + \hoffset + 1.5in - 3.5cm\relax}
+        \raisebox{\dimexpr-\height-7\baselineskip}{
+            \makebox[0pt]{\includegraphics[width=3.5cm]{images/aepia.png}}}}
+}
+
+
+\newcommand{\titletext}{Negociación: Análisis del Algoritmo NB\textsuperscript{3}}
+\newcommand{\mastername}{Máster Universitario en Investigación en Inteligencia Artificial}
+\newcommand{\subjectname}{Sistemas Multiagente}
+\author{Javier Vela Tambo \\ \texttt{100012966@alumnos.uimp.es}}
+\date{\today}
+
+\title{
+    \vspace{1cm}
+    \titletext \\
+    \vspace{0.35cm}
+    \large \mastername \\
+    \vspace{0.35cm}
+    \large \subjectname
+}
+    
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[L]{\titletext}
+% \fancyhead[R]{\subjectname}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introducción}
+
+Este documento presenta el resultado de los ejercicios de la práctica de ``Negociación'' de la asignatura. Para el desarrollo de este trabajo se ha seguido el manual\cite{manual}, primero estudiando el funcionamiento del algoritmo NB\textsuperscript{3}\cite{nb3} y posteriormente realizando las modificaciones propuestas.
+
+Dado que los enunciados no especifican detalladamente las expectativas para cada ejercicio más allá de los cambios en el código, se ha decidido enfocar el análisis en la realización de experimentos que permitan observar cómo afectan las modificaciones al algoritmo.
+
+En primer lugar, se analizarán las ejecuciones independientes del agente original (Sección \ref{sec:ej1}), prestando especial atención a las propuestas realizadas, si estas han sido aceptadas y confirmadas. Además, se evaluará la ganancia obtenida por los agentes en dichas ejecuciones. Posteriormente, se examinará cómo los distintos cambios introducidos influyen en estos aspectos (Secciones \ref{sec:ej2} y \ref{sec:ej3}).
+
+La práctica se ha realizado utilizando el código fuente base, proporcionado por los profesores de la asignatura, y se han realizado las modificaciones propuestas. El código fuente modificado se encuentra en el repositorio de GitHub\footnote{\url{https://github.com/javiervela/nb3_negotiation_agent}}.
+
+\newpage
+
+% Ejercicio 1: 
+\section{Análisis de Propuestas y Ganancia de Utilidad de los Agentes}\label{sec:ej1}
+
+Para analizar las mejoras propuestas en la práctica, se ha utilizado el agente original como referencia para realizar comparaciones. Se han ejecutado 31 simulaciones de 30 segundos cada una, con 5 agentes en cada simulación.
+
+Se ha desarrollado un script en Python que automatiza la lectura de los resultados de las simulaciones y calcula el número total de propuestas realizadas, aceptadas y confirmadas, la ganancia de utilidad obtenida por cada agente y el tiempo de simulación en el que se realiza la primera propuesta. Además, se incluye el número de simulaciones en las que se ha obtenido al menos una propuesta realizada, aceptada y confirmada, y el porcentaje sobre el total de simulaciones con al menos una propuesta.
+
+Para obtener esta información, se han completado las funciones de registro de los resultados en el fichero \texttt{server.log} con la ganancia de los agentes y el tiempo transcurrido en la simulación.
+
+Las Tablas \ref{tab:summary1} y \ref{tab:results1} muestran los resultados obtenidos en las simulaciones del agente original. Estos resultados muestran que, aunque los agentes realizan un número considerable de propuestas, la tasa de aceptación y confirmación es relativamente baja. Además, la utilidad obtenida varía significativamente entre las simulaciones, debido a que en la mayoría de ellas los agentes no consiguen realizar propuestas aceptadas.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|}
+        \hline
+        \textbf{Métrica}                & \textbf{No. Ejecuciones} & \textbf{\%} \\
+        \hline
+        Propuestas Realizadas $\geq 1$  & 22                       & -           \\
+        \hline
+        Propuestas Aceptadas $\geq 1$   & 19                       & 86.36\%     \\
+        \hline
+        Propuestas Confirmadas $\geq 1$ & 14                       & 63.64\%     \\
+        \hline
+    \end{tabular}
+    \caption{Resumen de las ejecuciones del agente original}
+    \label{tab:summary1}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|r|r|r|}
+        \hline
+        \textbf{Métrica}         & \textbf{Media} & \textbf{Mediana} & \textbf{Máx} & \textbf{Mín} & \textbf{SD} \\
+        \hline
+        Propuestas Realizadas    & 32.29          & 14               & 147          & 0            & 37.10       \\
+        \hline
+        Propuestas Aceptadas     & 2.39           & 1                & 15           & 0            & 3.75        \\
+        \hline
+        Propuestas Confirmadas   & 0.45           & 0                & 1            & 0            & 0.51        \\
+        \hline
+        Tiempo Primera Propuesta & 14             & 15               & 28           & 3            & 8.24        \\
+        \hline
+        Ganancia de Utilidad     & 1.72           & 0                & 53           & 0            & 6.86        \\
+        \hline
+    \end{tabular}
+    \caption{Resultados de las simulaciones del agente original}
+    \label{tab:results1}
+\end{table}
+
+\newpage
+
+% Ejercicio 2: 
+\section{Mejora del Cálculo de la Cota Superior}\label{sec:ej2}
+
+Para implementar las mejoras propuestas se ha duplicado el módulo \texttt{agent} y se ha renombrado a \texttt{improvedAgent}. En esta copia del agente original se ha modificado la función \texttt{calculateUpperBound} para que no se realicen propuestas en las que el agente ya ha aparecido como proveedor en la misma rama de la negociación. El Listado \ref{lst:calculateUpperBound} muestra la implementación de esta función.
+
+\begin{figure}[h]
+    \centering
+    \begin{lstlisting}[language=Java, caption={Método para calcular la cota superior}, label={lst:calculateUpperBound}]
+@Override
+public float calculateUpperBound(int agentID, List<NB3Node> branch, NB3WorldState ws) {
+
+    CommodityAssets maximalAssets = ((CmWorldState) ws).commodityAssets.copy();
+
+    for (int otherAgentID = 0; otherAgentID < maximalAssets.NUM_AGENTS; otherAgentID++) {
+
+        if (otherAgentID == agentID) {
+            continue;
+        }
+
+        for (int commodity = 0; commodity < maximalAssets.NUM_COMMODITIES; commodity++) {
+
+            if (!hasSupplied(agentID, commodity, branch) && !hasConsumed(otherAgentID, commodity, branch)) { // CHANGED
+
+                int quantity = maximalAssets.getAssets(agentID, commodity)
+                        + maximalAssets.getAssets(otherAgentID, commodity);
+
+                maximalAssets.setAssets(agentID, commodity, quantity);
+            }
+        }
+    }
+
+    int val = this.theAgent.preferenceProfile.calculateValue(agentID, maximalAssets);
+    return val;
+}
+    \end{lstlisting}
+\end{figure}
+
+Las Tablas \ref{tab:summary2} y \ref{tab:results2} muestran los resultados obtenidos en las simulaciones del agente mejorado. Estos resultados indican que, aunque el número de ejecuciones con al menos una propuesta realizada ha disminuido, el porcentaje de ejecuciones donde se han aceptado y confirmado estas propuestas ha aumentado. Esto sugiere que la modificación realizada ha mejorado la eficacia del agente a la hora de realizar propuestas en la negociación.
+
+El cambio más significativo se observa en el tiempo de simulación en el que se realiza la primera propuesta, que ha aumentado considerablemente. Esto es posible que se deba a que el agente realiza menos propuestas, pero estas son más efectivas. El resto de los resultados no sugieren ninguna mejora significativa frente al agente original.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|}
+        \hline
+        \textbf{Métrica}                & \textbf{No. Ejecuciones} & \textbf{\%} \\
+        \hline
+        Propuestas Realizadas $\geq 1$  & 16                       & -           \\
+        \hline
+        Propuestas Aceptadas $\geq 1$   & 15                       & 93.75\%     \\
+        \hline
+        Propuestas Confirmadas $\geq 1$ & 13                       & 81.25\%     \\
+        \hline
+    \end{tabular}
+    \caption{Resumen de las ejecuciones del agente mejorado}
+    \label{tab:summary2}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|r|r|r|}
+        \hline
+        \textbf{Métrica}         & \textbf{Media} & \textbf{Mediana} & \textbf{Máx} & \textbf{Mín} & \textbf{SD} \\
+        \hline
+        Propuestas Realizadas    & 38.71          & 6                & 188          & 0            & 51.52       \\
+        \hline
+        Propuestas Aceptadas     & 1.97           & 0                & 15           & 0            & 3.48        \\
+        \hline
+        Propuestas Confirmadas   & 0.45           & 0                & 2            & 0            & 0.57        \\
+        \hline
+        Tiempo Primera Propuesta & 18.19          & 19               & 28           & 8            & 5.62        \\
+        \hline
+        Ganancia de Utilidad     & 1.51           & 0                & 34           & 0            & 5.56        \\
+        \hline
+    \end{tabular}
+    \caption{Resultados de las simulaciones del agente mejorado}
+    \label{tab:results2}
+\end{table}
+
+\newpage
+
+% Ejercicio 3: 
+\section{Experimentación con Grados de Concesión} \label{sec:ej3}
+
+Con el objetivo de observar las diferencias en el comportamiento de los agentes en función del grado de concesión, se han realizado simulaciones con distintas estrategias de negociación caracterizadas por estos valores. Se han ejecutado 10 simulaciones de 30 segundos cada una, con 5 agentes en cada simulación, por cada estrategia de valores de concesión.
+
+Para realizar estas simulaciones se ha modificado la clase \texttt{ImprovedNegotiator} para que acepte un parámetro para cada valor de concesión $\alpha_1$ y $\alpha_2$. Además, se ha modificado la clase \texttt{RunMarketAndFiveAgents}, que ejecuta las simulaciones, para definir 4 estrategias negociación:
+
+\begin{itemize}
+    \item \textbf{Greedy} (Codicioso): $\alpha_1 = -4$, $\alpha_2 = -4$. Solo propone planes muy egoístas.
+    \item \textbf{Lazy} (Perezoso): $\alpha_1 = 4$, $\alpha_2 = -4$. Propone planes egoístas, pero cede si no encuentra mejores.
+    \item \textbf{Picky} (Exigente): $\alpha_1 = -4$, $\alpha_2 = 4$. Busca planes que sean tanto egoístas como altruistas.
+    \item \textbf{Desperate} (Desesperado): $\alpha_1 = 4$, $\alpha_2 = 4$. Cede rápidamente, incluso con baja utilidad.
+\end{itemize}
+
+Los resultados obtenidos en las simulaciones con diferentes estrategias de negociación se muestran en las Tablas \ref{tab:summary3} y \ref{tab:results3}. Estos resultados indican que la estrategia \textit{Picky} es la más efectiva, ya que ha obtenido el mayor número de propuestas aceptadas y confirmadas. Por otro lado, la estrategia \textit{Greedy} y \textit{Lazy} han sido la menoss efectivas, ya que han obtenido el menor número de propuestas aceptadas y confirmadas.
+
+En cuanto a las métricas de tiempo y ganancia de utilidad, la estrategia \textit{Greedy} ha sido la más rápida en realizar la primera propuesta, mientras que la estrategia \textit{Desperate} ha obtenido la mayor ganancia de utilidad. Estos resultados sugieren que la estrategia \textit{Desperate} es la más efectiva en términos de ganancia de utilidad, pero también la más arriesgada, ya que cede rápidamente en la negociación.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|r|r|}
+        \hline
+        \textbf{Métrica}               & \textbf{Greedy} & \textbf{Lazy} & \textbf{Picky} & \textbf{Desperate} \\
+        \hline
+        Propuestas Realizada $\geq 1$  & 5               & 5             & 7              & 4                  \\
+        \hline
+        Propuestas Aceptada $\geq 1$   & 1 (10.00\%)     & 1 (10.00\%)   & 6 (85.71\%)    & 4 (100.00\%)       \\
+        \hline
+        Propuestas Confirmada $\geq 1$ & 0 (0.00\%)      & 0 (0.00\%)    & 6 (85.71\%)    & 4 (100.00\%)       \\
+        \hline
+    \end{tabular}
+    \caption{Resumen de las ejecuciones con diferentes estrategias de negociación}
+    \label{tab:summary3}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|r|r|r|}
+        \hline
+        \textbf{Métrica (Media)} & \textbf{Greedy} & \textbf{Lazy} & \textbf{Picky} & \textbf{Desperate} \\
+        \hline
+        Propuestas Realizadas    & 4.00            & 6.60          & 54.10          & 33.60              \\
+        \hline
+        Propuestas Aceptadas     & 0.10            & 0.10          & 3.90           & 3.80               \\
+        \hline
+        Propuestas Confirmadas   & 0.00            & 0.00          & 0.60           & 0.60               \\
+        \hline
+        Tiempo Primera Propuesta & 6.60            & 24.00         & 22.86          & 23.25              \\
+        \hline
+        Ganancia de Utilidad     & 0.00            & 0.00          & 2.42           & 2.60               \\
+        \hline
+    \end{tabular}
+    \caption{Resultados de las simulaciones con diferentes estrategias de negociación}
+    \label{tab:results3}
+\end{table}
+
+Para comparar las estrategias de los agentes, se realizaron 20 simulaciones con 5 agentes, cada uno con una estrategia diferente.
+% La estrategia \textit{Default}, no analizada anteriormente, son los valores predeterminados sugeridos en la práctica $\alpha_1 = 2$ y $\alpha_2 = 4$.
+La Tabla \ref{tab:results3b} muestra la ganancia de utilidad media por agente. Los resultados confirman que la estrategia \textit{Desperate} es la más efectiva en términos de ganancia de utilidad.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|}
+        \hline
+        \textbf{Agente}   & \textbf{Ganancia de Utilidad (Media)} \\
+        \hline
+        Alice (Greedy)    & 0.00                                  \\
+        \hline
+        Bob (Lazy)        & 0.86                                  \\
+        \hline
+        Charles (Picky)   & 0.67                                  \\
+        \hline
+        David (Desperate) & 1.90                                  \\
+        \hline
+        % Eve (Default)     & 1.14                                  \\
+        % \hline
+    \end{tabular}
+    \caption{Valores de utilidad ganada media para los agentes con diferentes estrategias}
+    \label{tab:results3b}
+\end{table}
+
+\section*{Conclusiones}
+
+En este documento se ha analizado las modificaciones al algoritmo NB\textsuperscript{3} para mejorar la negociación de los agentes. Los resultados del Ejercicio 2 indican que la modificación ha incrementado la eficacia del agente en propuestas aceptadas y confirmadas.
+
+En el Ejercicio 3, la estrategia \textit{Desperate} resultó ser la más efectiva en términos de ganancia de utilidad, aunque es la más arriesgada. La estrategia \textit{Picky} fue la más efectiva en propuestas aceptadas y confirmadas.
+
+% \newpage
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+% \appendix
+
+% \section{[APPENDIX TITLE]}
+
+
+\end{document}
