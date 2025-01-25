@@ -67,14 +67,20 @@ public class RunMarketAndFiveAgents {
 
 			InetAddress serverAddress = InetAddress.getLocalHost();
 
-			ConcessionPreset preset = ConcessionPreset.DEFAULT;
+			ConcessionPreset[] presets = {
+					ConcessionPreset.GREEDY,
+					ConcessionPreset.LAZY,
+					ConcessionPreset.PICKY,
+					ConcessionPreset.DESPERATE,
+					ConcessionPreset.DEFAULT
+			};
 
 			for (int i = 0; i < 5; i++) {
 
 				System.out.println("RunFiveAgents.main() starting agent " + names[i]);
 
-				ImprovedNegotiator agent = new ImprovedNegotiator(names[i], serverAddress, 1234, preset.getAlpha1(),
-						preset.getAlpha2());
+				ImprovedNegotiator agent = new ImprovedNegotiator(names[i], serverAddress, 1234, presets[i].getAlpha1(),
+						presets[i].getAlpha2());
 				agent.enableLoggers(logfolderPath);
 				agent.start();
 			}
